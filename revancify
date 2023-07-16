@@ -46,7 +46,7 @@ do
                         shift
                         ;;
     "-r" | "--reinstall")
-                        if ping -c 1 google.com >/dev/null 2>&1; then
+                        if ! curl -sL --head  --request GET  google.com | grep '200' >/dev/null 2>&1; then
                             cd "$path"/.. && rm -rf "$path" && git clone --depth=1 https://github.com/decipher3114/Revancify.git && revancify && exit
                         else
                             echo "No internet Connection !!"
@@ -94,7 +94,7 @@ checkdependencies() {
     if [ -f "$DATA/aapt2" ] && [ -f "$DATA/pup" ] && bins=$(ls "$BIN") && grep -q java <<<"$bins" && grep -q wget <<<"$bins" && grep -q tput <<<"$bins" && grep -q dialog <<<"$bins" && grep -q jq <<<"$bins" && ls "$BIN/revancify" >/dev/null 2>&1 && ls "$HOME/storage" >/dev/null 2>&1; then
         return 0
     else
-        if ping -c 1 google.com >/dev/null 2>&1; then
+        if ! curl -sL --head  --request GET  google.com | grep '200' >/dev/null 2>&1; then
             installdependencies || (echo "Dependencies not installed !!" && exit 1)
         else
             cp "$path/revancify" "$BIN/revancify"
@@ -155,7 +155,7 @@ checkrevancify
 tput civis
 dialog --keep-window --no-shadow --keep-window --infobox "\n  █▀█ █▀▀ █░█ ▄▀█ █▄░█ █▀▀ █ █▀▀ █▄█\n  █▀▄ ██▄ ▀▄▀ █▀█ █░▀█ █▄▄ █ █▀░ ░█░  \n\nDeveloper    : decipher\nLast Updated : Checking...\nStatus       : Checking..." 10 42
 
-if ping -c 1 google.com >/dev/null 2>&1; then
+if ! curl -sL --head  --request GET  google.com | grep '200' >/dev/null 2>&1; then
     status=${status:-Online}
 else
     status=Offline
